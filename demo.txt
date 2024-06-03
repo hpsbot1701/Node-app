@@ -1,0 +1,21 @@
+I want to create a text file with 7 columns titled Time, Ax, Ay, Az, p, q ,r. 
+Each column should possess 3000 rows of randomnly generated data from the range of 0:2
+I have the following code.
+Time =  -2 + (2+2)*rand(3000,1);
+    Ax =  0 + (2+2)*rand(3000,1);
+    Ay = -1 + (2+2)*rand(3000,1);
+    Az =  -2 + (2+2)*rand(3000,1);
+    p(angular rate along x) =  -2 + (2+2)*rand(3000,1);
+    q(angular rate along y) =  -2 + (2+2)*rand(3000,1);
+    r(angular rate along z) =  -2 + (2+2)*rand(3000,1);
+    
+    T = table(Time, Ax, Ay, Az, p, q ,r);
+    writetable(T, 'SampleIMUDATA.txt');
+    type SampleIMUDATA.txt
+Im trying to create this text file in such a way where these numbers are randomnly generated everytime when I run the script, and overwrite the previous contents of the file SampleIMUDATA.txt
+When I run the script I get the following error:
+>> SampleIMUDATA
+Error: File: SampleIMUDATA.m Line: 5 Column: 15
+Invalid expression. Check for missing multiplication operator, missing or unbalanced delimiters, or other
+syntax error. To construct matrices, use brackets instead of parentheses.
+ I initally thought the dimensions of the 1 by 3000 matrix I was generating were wrong but that doesn't seem wrong so I'm wondering where the error is in dimensions.
