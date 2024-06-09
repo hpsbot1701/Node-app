@@ -10,58 +10,37 @@
 // const lib = require('./lib.js')
 // const express = require('express')
 
-const fs = require('fs')
-const index = fs.readFileSync('index.html','utf-8')
-const data = JSON.parse(fs.readFileSync('data.json','utf-8'))
-const products = data.products
 const express = require('express')
-
+const morgan = require('morgan')
 const Server =  express();
+const productRouter = require('./routes/product')
+const userRouter = require('./routes/user')
 
-Server.use((req,res,next)=>{
-    console.log(req.get('User-Agent'), req.method, req.ip, req.hostname)
-    next()
-})
+
+//bodyParser
+Server.use(express.json())
+Server.use(morgan('default'))
+//Server.use(express.urlencoded())
+Server.use(express.static('public'))
+Server.use('/products', productRouter.router);
+Server.use('/users', userRouter.router);
+
+// Server.use((req,res,next)=>{
+//     console.log(req.get('User-Agent'), req.method, req.ip, req.hostname)
+//     next()
+// })
 
 const auth = (req,res,next)=>{
-    console.log(req.query)
-    if(req.query.password=='123'){
-        next()
-    }else{
-       res.sendStatus(401);
-    }
+    // console.log(req.query)
+    // if(req.body.password=='123'){
+    //     next()
+    // }else{
+    //    res.sendStatus(401);
+    // }
+    next()
 }
 
-
-
-//API - Endpoint - Route
-Server.get('/',auth, (req,res)=>{
-    res.json({type:'GET'})
-})
-
-Server.post('/',auth,(req,res)=>{
-    res.json({type:'POST'})
-})
-
-Server.put('/',(req,res)=>{
-    res.json({type:'PUT'})
-})
-
-Server.delete('/',(req,res)=>{
-    res.json({type:'DELETE'})
-})
-
-Server.patch('/',(req,res)=>{
-    res.json({type:'PATCH'})
-})
-
-Server.get('/demo',(req,res)=>{
-     
-    //  res.sendStatus(404);
-      //res.json(products)
-   // res.status(201).send('<h1>hello</h1>')
-     //res.sendFile('/Users/hpsin/OneDrive/Desktop/node-app/index.html')
-})
+//MVC - Modal View Controller
 
 
 
