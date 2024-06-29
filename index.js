@@ -9,19 +9,34 @@
 // const http = require("http");
 // const lib = require('./lib.js')
 // const express = require('express')
-
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const Server =  express();
 const productRouter = require('./routes/product')
+const mongoose = require('mongoose');
 const userRouter = require('./routes/user')
+console.log('env',process.env.DB_PASSWORD) 
+
+//db connection
+main().catch(err => console.log(err));
+
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/ecommerce');
+  console.log('database connected')
+}
+
+
+
+
+
 
 
 //bodyParser
 Server.use(express.json())
 Server.use(morgan('default'))
 //Server.use(express.urlencoded())
-Server.use(express.static('public'))
+Server.use(express.static(process.env.PUBLIC_DIR))
 Server.use('/products', productRouter.router);
 Server.use('/users', userRouter.router);
 
@@ -47,7 +62,7 @@ const auth = (req,res,next)=>{
 
 
 
-Server.listen(8080,()=>{
+Server.listen(process.env.PORT,()=>{
     console.log("Server Started")
 })
 
